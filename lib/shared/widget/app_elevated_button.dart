@@ -1,0 +1,47 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_application_1/shared/app_colors.dart';
+import 'package:flutter_application_1/shared/app_text_style.dart';
+
+enum ButtonType { filled, unfilled }
+
+class AppElevatedButton extends StatelessWidget {
+  const AppElevatedButton({
+    super.key,
+    required this.buttonText,
+    required this.type,
+    required this.onPressed,
+  });
+  final String buttonText;
+  final ButtonType type;
+  final Function() onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+
+      style: type == ButtonType.filled
+          ? ElevatedButton.styleFrom(
+              minimumSize: Size.fromHeight(40),
+              backgroundColor: AppColors.black,
+              foregroundColor: AppColors.white,
+
+              textStyle: AppTextStyle.buttonLebel,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            )
+          : ElevatedButton.styleFrom(
+              minimumSize: Size.fromHeight(40),
+              backgroundColor: AppColors.white,
+              foregroundColor: AppColors.black,
+
+              textStyle: AppTextStyle.buttonLebel,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+      child: Text(buttonText),
+    );
+  }
+}
