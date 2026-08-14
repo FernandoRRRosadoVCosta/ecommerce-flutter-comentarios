@@ -3,13 +3,16 @@ import 'package:flutter_application_1/shared/app_colors.dart';
 
 class AppTextField extends StatefulWidget {
   const AppTextField({
+    this.onChanged,
     super.key,
     required this.hintText,
     this.obscureText = false,
+    this.errorText,
   });
   final String hintText;
   final bool obscureText;
-
+  final Function(String)? onChanged;
+  final String? errorText;
   @override
   State<AppTextField> createState() => _AppTextFieldState();
 }
@@ -32,8 +35,10 @@ class _AppTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      onChanged: widget.onChanged,
       obscureText: isObscure,
       decoration: InputDecoration(
+        errorText: widget.errorText,
         suffixIcon: widget.obscureText
             ? IconButton(
                 onPressed: () {

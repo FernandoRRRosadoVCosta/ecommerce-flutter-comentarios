@@ -13,7 +13,7 @@ class AppElevatedButton extends StatelessWidget {
   });
   final String buttonText;
   final ButtonType type;
-  final Function() onPressed;
+  final Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
