@@ -18,6 +18,25 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final LoginController loginController = LoginController();
+
+  @override
+  initState() {
+    super.initState();
+  }
+
+  Future<void> _handleLogin() async {
+    //futuramente não será necessário o setState, pois a tela será
+    //reconstruida com o provider
+    setState(() {
+      loginController.isLoading = true;
+    });
+
+    await loginController.login();
+    setState(() {
+      loginController.isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,8 +116,11 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Spacer(),
                   AppElevatedButton(
-                    onPressed: loginController.isActiveButton ? () {} : null,
                     buttonText: 'Entrar',
+                    isLoading: loginController.isLoading,
+                    onPressed: loginController.isActiveButton
+                        ? _handleLogin
+                        : null,
                     type: ButtonType.filled,
                   ),
                   SizedBox(height: 17),
@@ -108,7 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                       SignupPage.route,
                       arguments: 'vin',
                     ),
-                    type: ButtonType.unfilled,
+                    type: ButtonType.outlined,
                     buttonText: 'Cadastrar-se',
                   ),
                   Spacer(flex: 2),

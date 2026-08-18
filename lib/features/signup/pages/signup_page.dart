@@ -17,6 +17,24 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final SignupController signupController = SignupController();
   @override
+  initState() {
+    super.initState();
+  }
+
+  Future<void> _handleLogin() async {
+    //futuramente não será necessário o setState, pois a tela será
+    //reconstruida com o provider
+    setState(() {
+      signupController.isLoading = true;
+    });
+
+    await signupController.login();
+    setState(() {
+      signupController.isLoading = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -133,8 +151,11 @@ class _SignupPageState extends State<SignupPage> {
                     ),
 
                     AppElevatedButton(
-                      onPressed: signupController.isActiveButton ? () {} : null,
                       buttonText: 'Continuar',
+                      isLoading: signupController.isLoading,
+                      onPressed: signupController.isActiveButton
+                          ? _handleLogin
+                          : null,
                       type: ButtonType.filled,
                     ),
                   ],

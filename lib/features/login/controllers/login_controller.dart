@@ -8,6 +8,7 @@ class LoginController {
   bool isActiveButton = false;
   bool get isEmailValid => _emailRegex.hasMatch(email.trim());
   bool get isSenhaValid => senha.trim().length >= _carecterMinimoSenha;
+  bool isLoading = false;
 
   String? get emailError {
     if (email.trim().isEmpty || isEmailValid) return null;
@@ -35,5 +36,10 @@ class LoginController {
 
   void changeActiveCheckBox() {
     isActiveCheckBox = !isActiveCheckBox;
+  }
+
+  Future<void> login() async {
+    //Simula chamada da API
+    await Future.delayed(const Duration(seconds: 2));
   }
 }

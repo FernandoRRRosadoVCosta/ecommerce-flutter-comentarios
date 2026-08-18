@@ -16,4 +16,8 @@ class AppTextStyle {
     fontSize: 24,
     fontWeight: FontWeight.bold,
   );
+  static TextStyle buttonLabel = TextStyle(
+    color: AppColors.white,
+    fontWeight: FontWeight.bold,
+  );
 }

@@ -20,6 +20,8 @@ class SignupController {
 
   String confirmarSenha = '';
 
+  bool isLoading = false;
+
   Color cores = Colors.grey;
   bool get isSenhaCorrect => senha.isNotEmpty && senha == confirmarSenha;
   bool get isEmailValid => _emailRegex.hasMatch(email.trim());
@@ -71,5 +73,10 @@ class SignupController {
 
   void changeActiveCheckBox() {
     isActiveCheckBox = !isActiveCheckBox;
+  }
+
+  Future<void> login() async {
+    //Simula chamada da API
+    await Future.delayed(const Duration(seconds: 2));
   }
 }
