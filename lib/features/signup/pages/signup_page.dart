@@ -21,7 +21,7 @@ class _SignupPageState extends State<SignupPage> {
     super.initState();
   }
 
-  Future<void> _handleLogin() async {
+  Future<void> _handleSignup() async {
     //futuramente não será necessário o setState, pois a tela será
     //reconstruida com o provider
     setState(() {
@@ -154,7 +154,7 @@ class _SignupPageState extends State<SignupPage> {
                       buttonText: 'Continuar',
                       isLoading: signupController.isLoading,
                       onPressed: signupController.isActiveButton
-                          ? _handleLogin
+                          ? _handleSignup
                           : null,
                       type: ButtonType.filled,
                     ),
