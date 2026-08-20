@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/login/controllers/login_controller.dart';
-
 import 'package:flutter_application_1/features/signup/pages/signup_page.dart';
 import 'package:flutter_application_1/shared/app_colors.dart';
 import 'package:flutter_application_1/shared/app_text_style.dart';
@@ -70,31 +69,36 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     Spacer(flex: 6),
                     AppTextField(
+                      controller: loginController.emailController,
                       hintText: 'email@dominio.com',
                       validator: (value) {
                         return loginController.validateEmail(value);
                       },
-                      onChanged: (value) {
-                        setState(() {
-                          loginController.setEmail(value);
-                        });
-                      },
+                      // onChanged: (value) {
+                      //   setState(() {
+                      //     loginController.setEmail(value);
+                      //   });
+                      // },
                     ),
                     Spacer(),
 
                     AppTextField(
+                      controller: loginController.senhaController,
                       hintText: '**************',
                       obscureText: true,
-                      onChanged: (value) {
-                        setState(() {
-                          loginController.setSenha(value);
-                        });
+                      validator: (value) {
+                        return loginController.validateSenha(value);
                       },
+                      // onChanged: (value) {
+                      //   setState(() {
+                      //     loginController.setSenha(value);
+                      //   });
+                      // },
                     ),
                     Row(
                       children: [
                         AppCheckBox(
-                          value: loginController.isActiveCheckBox,
+                          value: loginController.isActiveCheckbox,
                           onChanged: (value) {
                             setState(() {
                               loginController.changeActiveCheckBox();
@@ -123,9 +127,10 @@ class _LoginPageState extends State<LoginPage> {
                     AppElevatedButton(
                       buttonText: 'Entrar',
                       isLoading: loginController.isLoading,
-                      onPressed: loginController.isActiveButton
-                          ? _handleLogin
-                          : null,
+                      onPressed: () {
+                        _handleLogin();
+                      },
+
                       type: ButtonType.filled,
                     ),
                     SizedBox(height: 17),

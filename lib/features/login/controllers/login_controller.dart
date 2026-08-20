@@ -1,42 +1,15 @@
+import 'package:flutter/material.dart';
+
 class LoginController {
   final RegExp _emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
-
-  final int _carecterMinimoSenha = 6;
-  bool isActiveCheckBox = false;
-  String email = '';
-  String senha = '';
-  bool isActiveButton = false;
-  bool get isEmailValid => _emailRegex.hasMatch(email.trim());
-  bool get isSenhaValid => senha.trim().length >= _carecterMinimoSenha;
+  final RegExp _minimumLengthRegex = RegExp(r'^.{6,}$');
   bool isLoading = false;
-
-  String? get emailError {
-    if (email.trim().isEmpty || isEmailValid) return null;
-    return 'E-mail inválido';
-  }
-
-  String? get senhaError {
-    if (senha.isEmpty || isSenhaValid) return null;
-    return "senha inválida";
-  }
-
-  void setEmail(String emailParam) {
-    email = emailParam;
-    changeActiveButton();
-  }
-
-  void setSenha(String senhaParam) {
-    senha = senhaParam;
-    changeActiveButton();
-  }
-
-  void changeActiveButton() {
-    isActiveButton = email.trim().isNotEmpty && senha.trim().isNotEmpty;
-  }
-
-  void changeActiveCheckBox() {
-    isActiveCheckBox = !isActiveCheckBox;
-  }
+  bool isActiveCheckbox = false;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController senhaController = TextEditingController();
+  bool get isEmailValid => _emailRegex.hasMatch(emailController.text.trim());
+  bool get isSenhaValid =>
+      _minimumLengthRegex.hasMatch(senhaController.text.trim());
 
   Future<void> login() async {
     //Simula chamada da API
@@ -45,9 +18,20 @@ class LoginController {
   }
 
   String? validateEmail(String? value) {
-    if (_emailRegex.hasMatch(email)) {
+    if (_emailRegex.hasMatch(emailController.text)) {
       return null;
     }
     return 'E-mail inválido';
+  }
+
+  String? validateSenha(String? value) {
+    if (senhaController.text.length >= 6) {
+      return null;
+    }
+    return 'Senha inválido';
+  }
+
+  void changeActiveCheckBox() {
+    isActiveCheckbox = !isActiveCheckbox;
   }
 }

@@ -29,21 +29,8 @@ class SignupController {
   bool get isSenhaUppercase => _uppercaseRegex.hasMatch(senha);
   bool get isSenhaLowercase => _lowercaseRegex.hasMatch(senha);
   bool get isSenhaSpecialCharacter => _specialCharacterRegex.hasMatch(senha);
-  String? get emailError {
-    if (email.trim().isEmpty || isEmailValid) return null;
-    return 'E-mail inválido';
-  }
-
-  void setEmail(String emailParam) {
-    email = emailParam;
-    changeActiveButton();
-  }
-
-  void setnome(String nomeParam) {
-    nome = nomeParam;
-    changeActiveButton();
-  }
-
+  TextEditingController emailController = TextEditingController();
+  TextEditingController nomeController = TextEditingController();
   void setSenha(String senhaParam) {
     senha = senhaParam;
     changeActiveButton();
@@ -73,6 +60,20 @@ class SignupController {
 
   void changeActiveCheckBox() {
     isActiveCheckBox = !isActiveCheckBox;
+  }
+
+  String? validateEmail(String? value) {
+    if (_emailRegex.hasMatch(emailController.text)) {
+      return null;
+    }
+    return 'E-mail inválido';
+  }
+
+  String? validateNome(String? value) {
+    if (nomeController.text.isNotEmpty) {
+      return null;
+    }
+    return 'Nome inválido';
   }
 
   Future<void> login() async {

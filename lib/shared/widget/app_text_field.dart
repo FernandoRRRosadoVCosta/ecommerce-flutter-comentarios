@@ -8,11 +8,13 @@ class AppTextField extends StatefulWidget {
     required this.hintText,
     this.obscureText = false,
     this.validator,
+    this.controller,
   });
   final String hintText;
   final bool obscureText;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
+  final TextEditingController? controller;
   @override
   State<AppTextField> createState() => _AppTextFieldState();
 }
@@ -35,6 +37,8 @@ class _AppTextFieldState extends State<AppTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autovalidateMode: AutovalidateMode.onUnfocus,
+      controller: widget.controller,
       onChanged: widget.onChanged,
       obscureText: isObscure,
       validator: widget.validator,
