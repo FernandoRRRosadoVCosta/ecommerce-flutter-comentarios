@@ -8,6 +8,6 @@ class AppCheckBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Checkbox(value: value, onChanged: onChanged);
+    return Checkbox(value: value, onChanged: onChanged, focusColor: Colors.red);
   }
 }

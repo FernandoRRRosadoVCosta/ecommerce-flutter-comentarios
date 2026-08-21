@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SignupController {
+class SignupController extends ChangeNotifier {
   final RegExp _minimumLengthRegex = RegExp(r'^.{6,}$');
   final RegExp _uppercaseRegex = RegExp(r'^(?=.*[A-Z]).+$');
   final RegExp _lowercaseRegex = RegExp(r'^(?=.*[a-z]).+$');
@@ -11,11 +11,6 @@ class SignupController {
   bool isActiveButton = false;
 
   bool isActiveCheckBox = false;
-
-  String email = '';
-
-  String nome = '';
-
   String senha = '';
 
   String confirmarSenha = '';
@@ -24,13 +19,18 @@ class SignupController {
 
   Color cores = Colors.grey;
   bool get isSenhaCorrect => senha.isNotEmpty && senha == confirmarSenha;
-  bool get isEmailValid => _emailRegex.hasMatch(email.trim());
-  bool get isSenhaMinLength => _minimumLengthRegex.hasMatch(senha);
-  bool get isSenhaUppercase => _uppercaseRegex.hasMatch(senha);
-  bool get isSenhaLowercase => _lowercaseRegex.hasMatch(senha);
-  bool get isSenhaSpecialCharacter => _specialCharacterRegex.hasMatch(senha);
+
+  bool get isSenhaMinLength =>
+      _minimumLengthRegex.hasMatch(senhaComtroller.text);
+  bool get isSenhaUppercase => _uppercaseRegex.hasMatch(senhaComtroller.text);
+  bool get isSenhaLowercase => _lowercaseRegex.hasMatch(senhaComtroller.text);
+  bool get isSenhaSpecialCharacter =>
+      _specialCharacterRegex.hasMatch(senhaComtroller.text);
   TextEditingController emailController = TextEditingController();
   TextEditingController nomeController = TextEditingController();
+  TextEditingController senhaComtroller = TextEditingController();
+  TextEditingController senhacnfrmarComtrller = TextEditingController();
+
   void setSenha(String senhaParam) {
     senha = senhaParam;
     changeActiveButton();
@@ -60,6 +60,7 @@ class SignupController {
 
   void changeActiveCheckBox() {
     isActiveCheckBox = !isActiveCheckBox;
+    print('isActiveCheckBox: $isActiveCheckBox');
   }
 
   String? validateEmail(String? value) {
@@ -74,6 +75,53 @@ class SignupController {
       return null;
     }
     return 'Nome inválido';
+  }
+
+  bool? validateSenhasCoincidem(String? value) {
+    if (senha == confirmarSenha) {
+      return null;
+    }
+    return false;
+  }
+
+  bool? validateMinimoCracteres(String? value) {
+    if (_minimumLengthRegex.hasMatch(senha)) {
+      return null;
+    }
+    return false;
+  }
+
+  bool? validateCaracteresEspecial(String? value) {
+    if (_specialCharacterRegex.hasMatch(senha)) {
+      return null;
+    }
+    return false;
+  }
+
+  bool? validateLetraMaiuscula(String? value) {
+    if (_uppercaseRegex.hasMatch(senha)) {
+      return null;
+    }
+    return false;
+  }
+
+  bool? validateLetraMinuscula(String? value) {
+    if (_lowercaseRegex.hasMatch(senha)) {
+      return null;
+    }
+    return false;
+  }
+
+  String? validatesenha(String? value) {
+    // ignore: unrelated_type_equality_checks
+    if (senha == validateLetraMinuscula &&
+        senha == validateLetraMaiuscula &&
+        senha == validateCaracteresEspecial &&
+        senha == validateMinimoCracteres) {
+      return null;
+    }
+
+    return 'Senha inválida';
   }
 
   Future<void> login() async {

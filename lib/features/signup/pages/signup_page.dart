@@ -82,10 +82,12 @@ class _SignupPageState extends State<SignupPage> {
                         },
                       ),
                       AppTextField(
+                        controller: signupController.senhaComtroller,
                         onChanged: (value) {
-                          setState(() {
-                            signupController.setSenha(value);
-                          });
+                          setState(() {});
+                        },
+                        validator: (value) {
+                          return signupController.validatesenha(value);
                         },
                         hintText: 'senha',
                         obscureText: true,

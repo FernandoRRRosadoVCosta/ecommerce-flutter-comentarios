@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-class LoginController {
+class LoginController extends ChangeNotifier {
   final RegExp _emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
   final RegExp _minimumLengthRegex = RegExp(r'^.{6,}$');
+  final GlobalKey<FormState> key = GlobalKey<FormState>();
   bool isLoading = false;
   bool isActiveCheckbox = false;
   TextEditingController emailController = TextEditingController();
@@ -33,5 +34,18 @@ class LoginController {
 
   void changeActiveCheckBox() {
     isActiveCheckbox = !isActiveCheckbox;
+    notifyListeners();
+  }
+
+  Future<void> handleLogin() async {
+    if (key.currentState!.validate()) {
+      isLoading = true;
+      notifyListeners();
+      await login();
+      print('Executei o login do controller');
+
+      isLoading = false;
+      notifyListeners();
+    }
   }
 }
