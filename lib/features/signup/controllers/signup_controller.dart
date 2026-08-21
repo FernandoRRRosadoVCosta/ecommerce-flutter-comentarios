@@ -18,7 +18,11 @@ class SignupController extends ChangeNotifier {
   bool isLoading = false;
 
   Color cores = Colors.grey;
-  bool get isSenhaCorrect => senha.isNotEmpty && senha == confirmarSenha;
+  final GlobalKey<FormState> key = GlobalKey<FormState>();
+
+  bool get isSenhaCorrect =>
+      senhaComtroller.text.isNotEmpty &&
+      senhacnfrmarComtrller.text == senhacnfrmarComtrller.text;
 
   bool get isSenhaMinLength =>
       _minimumLengthRegex.hasMatch(senhaComtroller.text);
@@ -33,21 +37,21 @@ class SignupController extends ChangeNotifier {
 
   void setSenha(String senhaParam) {
     senha = senhaParam;
+    notifyListeners();
     changeActiveButton();
   }
 
   void setConfirmarSenha(String confirmarSenhaParam) {
     confirmarSenha = confirmarSenhaParam;
+    notifyListeners();
     changeActiveButton();
   }
 
-  // void setCores(bool coresParam, bool isActiveCheckBoxParam) {
-  //   if (isActiveCheckBoxParam) {
-  //     cores = Colors.red;
-  //   } else {
-  //     cores = Colors.green;
-  //   }
-  // }
+  Future<void> signUp() async {
+    //Simula chamada da API
+    await Future.delayed(const Duration(seconds: 2));
+    print('Cadastro realizado com sucesso');
+  }
 
   void changeActiveButton() {
     isActiveButton =
@@ -56,76 +60,72 @@ class SignupController extends ChangeNotifier {
         _specialCharacterRegex.hasMatch(senha) &&
         isSenhaMinLength &&
         isSenhaCorrect;
+    notifyListeners();
   }
 
   void changeActiveCheckBox() {
     isActiveCheckBox = !isActiveCheckBox;
     print('isActiveCheckBox: $isActiveCheckBox');
+    notifyListeners();
   }
 
   String? validateEmail(String? value) {
     if (_emailRegex.hasMatch(emailController.text)) {
+      notifyListeners();
       return null;
     }
+    notifyListeners();
     return 'E-mail inválido';
   }
 
   String? validateNome(String? value) {
     if (nomeController.text.isNotEmpty) {
+      notifyListeners();
       return null;
     }
+    notifyListeners();
     return 'Nome inválido';
   }
 
-  bool? validateSenhasCoincidem(String? value) {
-    if (senha == confirmarSenha) {
+  String? validateSenha(String? value) {
+    if (minSeisCaracteres &&
+        possuiCaractereEspecial &&
+        possuiLetraMaiuscula &&
+        possuiLetraMinuscula) {
+      notifyListeners();
       return null;
     }
-    return false;
+    notifyListeners();
+    return 'Senha não atende aos requisitos';
   }
 
-  bool? validateMinimoCracteres(String? value) {
-    if (_minimumLengthRegex.hasMatch(senha)) {
+  String? validateConfirmarSenha(String? value) {
+    if (senhasCoincidentes) {
+      notifyListeners();
       return null;
     }
-    return false;
+    notifyListeners();
+    return 'As senhas não coincidem';
   }
 
-  bool? validateCaracteresEspecial(String? value) {
-    if (_specialCharacterRegex.hasMatch(senha)) {
-      return null;
+  bool get possuiLetraMaiuscula =>
+      senhaComtroller.text.contains(RegExp(r'[A-Z]'));
+  bool get possuiLetraMinuscula =>
+      senhaComtroller.text.contains(RegExp(r'[a-z]'));
+  bool get senhasCoincidentes =>
+      senhaComtroller.text == senhacnfrmarComtrller.text &&
+      senhaComtroller.text.isNotEmpty;
+  bool get minSeisCaracteres => senhaComtroller.text.length >= 6;
+  bool get possuiCaractereEspecial =>
+      senhaComtroller.text.contains(RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+
+  Future<void> handleSignup() async {
+    if (key.currentState!.validate()) {
+      isLoading = true;
+      notifyListeners();
+      await signUp();
+      isLoading = false;
+      notifyListeners();
     }
-    return false;
-  }
-
-  bool? validateLetraMaiuscula(String? value) {
-    if (_uppercaseRegex.hasMatch(senha)) {
-      return null;
-    }
-    return false;
-  }
-
-  bool? validateLetraMinuscula(String? value) {
-    if (_lowercaseRegex.hasMatch(senha)) {
-      return null;
-    }
-    return false;
-  }
-
-  String? validatesenha(String? value) {
-    // ignore: unrelated_type_equality_checks
-    if (senha == validateLetraMinuscula &&
-        senha == validateLetraMaiuscula &&
-        senha == validateCaracteresEspecial &&
-        senha == validateMinimoCracteres) {
-      return null;
-    }
-
-    return 'Senha inválida';
-  }
-
-  Future<void> login() async {
-    //Simula chamada da API
-    await Future.delayed(const Duration(seconds: 2));
   }
 }
