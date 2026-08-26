@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/features/home/page/home_page.dart';
 import 'package:flutter_application_1/features/login/pages/login_page.dart';
 import 'package:flutter_application_1/features/recover/pages/recover_page.dart';
 import 'package:flutter_application_1/features/signup/pages/signup_page.dart';
@@ -8,5 +9,6 @@ class AppRoutes {
     LoginPage.route: (context) => LoginPage(),
     SignupPage.route: (context) => SignupPage(),
     RecoverPage.route: (context) => RecoverPage(),
+    HomePage.route: (context) => HomePage(),
   };
 }

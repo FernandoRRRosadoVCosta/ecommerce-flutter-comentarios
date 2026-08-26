@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/features/home/controllers/home_controller.dart';
 import 'package:flutter_application_1/features/login/controllers/login_controller.dart';
 import 'package:flutter_application_1/features/login/pages/login_page.dart';
+import 'package:flutter_application_1/features/signup/controllers/signup_controller.dart';
 import 'package:flutter_application_1/routes.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +21,16 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) {
             return LoginController();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (context) {
+            return HomeController();
+          },
+        ),
+        ChangeNotifierProvider(
+          create: (context) {
+            return SignupController();
           },
         ),
       ],

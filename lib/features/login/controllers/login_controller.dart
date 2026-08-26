@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/features/login/model/user.dart';
+import 'package:flutter_application_1/shared/exceptions/auth_exception.dart';
 
 class LoginController extends ChangeNotifier {
   final RegExp _emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
@@ -11,11 +13,15 @@ class LoginController extends ChangeNotifier {
   bool get isEmailValid => _emailRegex.hasMatch(emailController.text.trim());
   bool get isSenhaValid =>
       _minimumLengthRegex.hasMatch(senhaController.text.trim());
-
+  User? user;
   Future<void> login() async {
     //Simula chamada da API
     await Future.delayed(const Duration(seconds: 2));
-    print('Login realizado com sucesso');
+    if (emailController.text.trim() != 'vitor6890@gmail.com' ||
+        senhaController.text.trim() != '122333') {
+      throw AuthException('E-mail ou senha incorretos');
+    }
+    user = User(nome: 'Vitor', email: emailController.text);
   }
 
   String? validateEmail(String? value) {
@@ -37,15 +43,23 @@ class LoginController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> handleLogin() async {
-    if (key.currentState!.validate()) {
-      isLoading = true;
-      notifyListeners();
-      await login();
-      print('Executei o login do controller');
+  void changeIsLoading(bool value) {
+    isLoading = value;
+    notifyListeners();
+  }
 
-      isLoading = false;
-      notifyListeners();
+  Future<void> handleLogin() async {
+    if (!key.currentState!.validate()) {
+      throw ErrorDescription('validacao_incorreta');
+    }
+
+    changeIsLoading(true);
+    try {
+      await login();
+      emailController.clear();
+      senhaController.clear();
+    } finally {
+      changeIsLoading(false);
     }
   }
 }

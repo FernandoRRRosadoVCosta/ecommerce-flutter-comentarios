@@ -1,8 +1,11 @@
+import 'package:animated_snack_bar/animated_snack_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/features/home/page/home_page.dart';
 import 'package:flutter_application_1/features/login/controllers/login_controller.dart';
 import 'package:flutter_application_1/features/signup/pages/signup_page.dart';
 import 'package:flutter_application_1/shared/app_colors.dart';
 import 'package:flutter_application_1/shared/app_text_style.dart';
+import 'package:flutter_application_1/shared/exceptions/auth_exception.dart';
 import 'package:flutter_application_1/shared/widget/app_check_box.dart';
 import 'package:flutter_application_1/shared/widget/app_elevated_button.dart';
 import 'package:flutter_application_1/shared/widget/app_text_field.dart';
@@ -105,10 +108,23 @@ class LoginPage extends StatelessWidget {
                         AppElevatedButton(
                           buttonText: 'Entrar',
                           isLoading: controller.isLoading,
-                          onPressed: () {
-                            controller.handleLogin();
+                          onPressed: () async {
+                            try {
+                              await controller.handleLogin();
+                              if (!context.mounted) return;
+                              Navigator.popAndPushNamed(
+                                context,
+                                HomePage.route,
+                              );
+                            } on AuthException catch (e) {
+                              AnimatedSnackBar.material(
+                                e.massage,
+                                type: AnimatedSnackBarType.error,
+                                mobileSnackBarPosition:
+                                    MobileSnackBarPosition.bottom,
+                              ).show(context);
+                            }
                           },
-
                           type: ButtonType.filled,
                         ),
                         SizedBox(height: 17),
