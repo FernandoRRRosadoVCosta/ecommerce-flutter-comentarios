@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/features/home/models/category_model.dart';
+import 'package:flutter_application_1/shared/mocks.dart';
 
 enum CategoriesViewState { loading, success, erros }
 
+enum productsViewState { loading, success, erros }
+
 class HomeController extends ChangeNotifier {
   List<Category> categories = [];
+  List<Products> products = [];
   CategoriesViewState categoriesState = CategoriesViewState.loading;
+  productsViewState productsState = productsViewState.loading;
 
   void changeCategoriesState(CategoriesViewState state) {
     categoriesState = state;
+    notifyListeners();
+  }
+
+  void changeproductsState(productsViewState state) {
+    productsState = state;
     notifyListeners();
   }
 
@@ -15,24 +26,30 @@ class HomeController extends ChangeNotifier {
     changeCategoriesState(CategoriesViewState.loading);
     await Future.delayed(Duration(seconds: 3));
     try {
-      categories = [
-        for (var element in categoriesJson) Category.fromJson(element),
-      ];
+      // categories = [
+      //   for (var element in categoriesJson) Category.fromJson(element),
+      // ];
+      categories = categoriesJson.map((item) {
+        return Category.fromJson(item);
+      }).toList();
+
       changeCategoriesState(CategoriesViewState.success);
     } catch (e) {
       changeCategoriesState(CategoriesViewState.erros);
     }
   }
-}
 
-class Category {
-  final String name;
-  final String imageUrl;
-
-  Category({required this.name, required this.imageUrl});
-
-  factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(name: json['name'], imageUrl: json['imageUrl']);
+  Future<void> getproducts() async {
+    changeproductsState(productsViewState.loading);
+    await Future.delayed(Duration(seconds: 3));
+    try {
+      products = productsJson.map((item) {
+        return Products.fromJson(item);
+      }).toList();
+      changeproductsState(productsViewState.success);
+    } catch (e) {
+      changeproductsState(productsViewState.erros);
+    }
   }
 }
 
@@ -40,7 +57,7 @@ class Products {
   final String brand;
   final String name;
   final String imageUrl;
-  final String price;
+  final double price;
   Products({
     required this.brand,
     required this.name,
@@ -57,42 +74,3 @@ class Products {
     );
   }
 }
-
-final List<Map<String, dynamic>> categoriesJson = [
-  {'name': 'Frutas', 'imageUrl': 'https://i.postimg.cc/SNX7hc6F/Image.png'},
-  {
-    'name': 'Verduras',
-    'imageUrl': 'https://i.postimg.cc/8PFBSLh2/Image-(1).png',
-  },
-  {'name': 'Padaria', 'imageUrl': 'https://i.postimg.cc/xTky2LvV/Image-1.png'},
-  {
-    'name': 'Importados',
-    'imageUrl': 'https://i.postimg.cc/Yq4fHQ6w/Image-2.png',
-  },
-];
-final List<Map<String, dynamic>> productsJson = [
-  {
-    'brand': 'Natural da terra',
-    'name': 'Rabanete',
-    'imageUrl': 'https://i.postimg.cc/8Pt82Qmf/Image-1.png',
-    'price': 10.99,
-  },
-  {
-    'brand': 'Akatsu',
-    'name': 'Acerola',
-    'imageUrl': 'https://i.postimg.cc/BQMWr9B8/Image.png',
-    'price': 7.99,
-  },
-  {
-    'brand': 'Natural da terra',
-    'name': 'Cogumelo',
-    'imageUrl': 'https://i.postimg.cc/RVP8P1vw/Image-2.png',
-    'price': 12.19,
-  },
-  {
-    'brand': 'Natural da terra',
-    'name': 'Cogumelo',
-    'imageUrl': 'https://i.postimg.cc/RVP8P1vw/Image-2.png',
-    'price': 12.19,
-  },
-];
