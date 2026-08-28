@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/home/controllers/home_controller.dart';
 import 'package:flutter_application_1/features/home/models/category_model.dart';
+import 'package:flutter_application_1/features/home/models/products_model.dart';
+import 'package:flutter_application_1/features/home/page/widget/categories__state.dart';
 import 'package:flutter_application_1/features/login/controllers/login_controller.dart';
 import 'package:flutter_application_1/shared/app_colors.dart';
 import 'package:flutter_application_1/shared/app_text_style.dart';
@@ -45,33 +47,9 @@ class _HomePageState extends State<HomePage> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 170,
-                child: switch (homeCrontroller.categoriesState) {
-                  CategoriesViewState.loading => CircularProgressIndicator(),
-                  CategoriesViewState.erros => Text('Problema ao categorias'),
-                  CategoriesViewState.success => SizedBox(
-                    child: ListView.builder(
-                      itemCount: homeCrontroller.categories.length,
-
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) {
-                        Category category = homeCrontroller.categories[index];
-
-                        return Container(
-                          margin: EdgeInsets.all(10),
-                          height: 50,
-                          child: Column(
-                            children: [
-                              Image.network(category.imageUrl),
-                              Text(category.name, style: AppTextStyle.title),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                },
+              CategoriesSection(
+                state: homeCrontroller.categoriesState,
+                categories: homeCrontroller.categories,
               ),
               Text("Produtos", style: AppTextStyle.title),
               SizedBox(
@@ -98,7 +76,10 @@ class _HomePageState extends State<HomePage> {
                                 style: TextStyle(color: AppColors.grey),
                               ),
                               Text(products.name, style: AppTextStyle.title),
-                              Text(products.price.toString()),
+                              Text(
+                                products.price.toString(),
+                                style: TextStyle(color: Colors.green),
+                              ),
                             ],
                           ),
                         );
@@ -107,12 +88,12 @@ class _HomePageState extends State<HomePage> {
                   ),
                 },
               ),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     homeCrontroller.getproducts();
-              //   },
-              //   child: Text('asdasd'),
-              // ),
+              ElevatedButton(
+                onPressed: () {
+                  homeCrontroller.getproducts();
+                },
+                child: Text('asdasd'),
+              ),
             ],
           );
         },

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/home/models/category_model.dart';
+import 'package:flutter_application_1/features/home/models/products_model.dart';
 import 'package:flutter_application_1/shared/mocks.dart';
 
 enum CategoriesViewState { loading, success, erros }
@@ -50,27 +51,5 @@ class HomeController extends ChangeNotifier {
     } catch (e) {
       changeproductsState(productsViewState.erros);
     }
-  }
-}
-
-class Products {
-  final String brand;
-  final String name;
-  final String imageUrl;
-  final double price;
-  Products({
-    required this.brand,
-    required this.name,
-    required this.imageUrl,
-    required this.price,
-  });
-
-  factory Products.fromJson(Map<String, dynamic> json) {
-    return Products(
-      brand: json['brand'],
-      name: json['name'],
-      imageUrl: json['imageUrl'],
-      price: json['price'],
-    );
   }
 }
