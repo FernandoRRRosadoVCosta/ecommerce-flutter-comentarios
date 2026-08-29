@@ -10,7 +10,7 @@ class CategoryCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: EdgeInsets.all(10),
-      height: 50,
+      height: 120,
       child: Column(
         children: [
           Image.network(category.imageUrl),

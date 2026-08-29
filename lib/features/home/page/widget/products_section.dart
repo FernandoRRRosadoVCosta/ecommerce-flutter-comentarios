@@ -1,41 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/home/controllers/home_controller.dart';
-import 'package:flutter_application_1/features/home/models/category_model.dart';
-import 'package:flutter_application_1/features/home/page/widget/category_card.dart';
+import 'package:flutter_application_1/features/home/models/products_model.dart';
+import 'package:flutter_application_1/features/home/page/widget/products_card.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-//TODO renomear para camelcase
-class CategoriesSection extends StatelessWidget {
-  const CategoriesSection({
+class ProductsSection extends StatelessWidget {
+  const ProductsSection({
     super.key,
     required this.state,
-    required this.categories,
+    required this.products,
   });
-  final CategoriesViewState state;
-  final List<Category> categories;
-  static final List<Category> _fakeCatogory = List.filled(
+  final productsViewState state;
+  final List<Products> products;
+  static final List<Products> _fakeProducts = List.filled(
     4,
-    Category(name: "Nome do Categories", imageUrl: ''),
+    Products(
+      brand: 'Marca do produto',
+      name: 'Nome do produto',
+      imageUrl: '',
+      price: 0,
+    ),
   );
-
   @override
   Widget build(BuildContext context) {
-    print(state);
     return SizedBox(
-      height: 170,
+      height: 260,
       child: Column(
         children: [
-          if (state == CategoriesViewState.erros)
-            const Text("Problema ao Categories")
+          if (state == productsViewState.erros)
+            const Text("Problema ao products")
           else
             (Builder(
               builder: (context) {
-                final isLoading = state == CategoriesViewState.loading;
-                final items = isLoading ? _fakeCatogory : categories;
+                final isLoading = state == productsViewState.loading;
+                final items = isLoading ? _fakeProducts : products;
                 return Skeletonizer(
                   enabled: isLoading,
                   child: SizedBox(
-                    height: 150,
+                    height: 247,
 
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
@@ -44,8 +46,8 @@ class CategoriesSection extends StatelessWidget {
                           : null,
                       child: IntrinsicHeight(
                         child: Row(
-                          children: items.map((Category categories) {
-                            return CategoryCard(category: categories);
+                          children: items.map((Products products) {
+                            return ProductsCard(products: products);
                           }).toList(),
                         ),
                       ),
