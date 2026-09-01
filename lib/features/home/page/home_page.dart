@@ -61,7 +61,9 @@ class _HomePageState extends State<HomePage> {
 
               ElevatedButton(
                 onPressed: () {
-                  homeCrontroller.getCategories();
+                  homeCrontroller
+                    ..getCategories()
+                    ..getproducts();
                 },
                 child: Text('asdasd'),
               ),

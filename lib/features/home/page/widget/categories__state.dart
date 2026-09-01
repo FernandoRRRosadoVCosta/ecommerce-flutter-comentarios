@@ -15,14 +15,14 @@ class CategoriesSection extends StatelessWidget {
   final List<Category> categories;
   static final List<Category> _fakeCatogory = List.filled(
     4,
-    Category(name: "Nome do Categories", imageUrl: ''),
+    Category(name: "Categor", imageUrl: ''),
   );
 
   @override
   Widget build(BuildContext context) {
     print(state);
     return SizedBox(
-      height: 170,
+      height: 160,
       child: Column(
         children: [
           if (state == CategoriesViewState.erros)
@@ -35,7 +35,7 @@ class CategoriesSection extends StatelessWidget {
                 return Skeletonizer(
                   enabled: isLoading,
                   child: SizedBox(
-                    height: 150,
+                    height: 130,
 
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,

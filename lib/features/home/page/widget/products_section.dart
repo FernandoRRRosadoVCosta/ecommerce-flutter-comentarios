@@ -19,12 +19,13 @@ class ProductsSection extends StatelessWidget {
       name: 'Nome do produto',
       imageUrl: '',
       price: 0,
+      category: 'Categoria do produto',
     ),
   );
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 260,
+      height: 350,
       child: Column(
         children: [
           if (state == productsViewState.erros)
@@ -37,7 +38,7 @@ class ProductsSection extends StatelessWidget {
                 return Skeletonizer(
                   enabled: isLoading,
                   child: SizedBox(
-                    height: 247,
+                    height: 290,
 
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,

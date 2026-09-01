@@ -17,7 +17,7 @@ class LoginController extends ChangeNotifier {
   Future<void> login() async {
     //Simula chamada da API
     await Future.delayed(const Duration(seconds: 2));
-    if (emailController.text.trim() != 'vitor6890@gmail.com' ||
+    if (emailController.text.trim() != 'gabriel@gmail.com' ||
         senhaController.text.trim() != '122333') {
       throw AuthException('E-mail ou senha incorretos');
     }
