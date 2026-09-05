@@ -9,9 +9,26 @@ enum productsViewState { loading, success, erros }
 
 class HomeController extends ChangeNotifier {
   List<Category> categories = [];
-  List<Products> products = [];
+  List<Product> products = [];
   CategoriesViewState categoriesState = CategoriesViewState.loading;
   productsViewState productsState = productsViewState.loading;
+  List<String> images = [
+    'assets/images/Banner.png',
+    'assets/images/Banner2.png',
+  ];
+  List<Widget> indicators(imagesLength, currentIndex) {
+    return List<Widget>.generate(imagesLength, (index) {
+      return Container(
+        margin: EdgeInsets.all(3),
+        width: 10,
+        height: 10,
+        decoration: BoxDecoration(
+          color: currentIndex == index ? Colors.black : Colors.black26,
+          shape: BoxShape.circle,
+        ),
+      );
+    });
+  }
 
   void changeCategoriesState(CategoriesViewState state) {
     categoriesState = state;
@@ -45,7 +62,7 @@ class HomeController extends ChangeNotifier {
     await Future.delayed(Duration(seconds: 3));
     try {
       products = productsJson.map((item) {
-        return Products.fromJson(item);
+        return Product.fromJson(item);
       }).toList();
       changeproductsState(productsViewState.success);
     } catch (e) {

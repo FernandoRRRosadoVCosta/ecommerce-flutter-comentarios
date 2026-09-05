@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/home/controllers/products_by_category_controller.dart';
+import 'package:flutter_application_1/features/home/models/products_model.dart';
+import 'package:flutter_application_1/features/home/page/widget/products_card.dart';
+import 'package:flutter_application_1/shared/app_text_style.dart';
+import 'package:flutter_application_1/shared/widget/app_text_field.dart';
 import 'package:provider/provider.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ProductsByCategoryPage extends StatefulWidget {
   const ProductsByCategoryPage({super.key, required this.categoryName});
-  static String route = '/products-by-category';
+
+  static const String route = '/products-by-category';
+
   final String categoryName;
 
   @override
@@ -12,13 +19,21 @@ class ProductsByCategoryPage extends StatefulWidget {
 }
 
 class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
+  static final List<Product> _fakeProducts = List.filled(
+    6,
+    Product(
+      brand: 'Marca do produto',
+      name: 'Nome do produto',
+      imageUrl: '',
+      price: 0,
+      category: '',
+    ),
+  );
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    //TODO bater no metodo do contrller  que filtra apenas produ
-    //tos pela categoryName
-    WidgetsBinding.instance.addPostFrameCallback((timeDilation) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<ProductsByCategoryController>().getProductsByCategory(
         widget.categoryName,
       );
@@ -28,23 +43,66 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.categoryName)),
-      body: Consumer<ProductsByCategoryController>(
-        builder: (context, controller, child) {
-          return GridView.count(
-            crossAxisCount: 2,
-            children: controller.productByCategory.map((product) {
-              return Card(
-                child: Column(
-                  children: [
-                    Text(product.name),
-                    Text('R\$ ${product.price.toStringAsFixed(2)}'),
-                  ],
-                ),
-              );
-            }).toList(),
-          );
-        },
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text(widget.categoryName, style: AppTextStyle.title),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.shopping_cart_outlined),
+          ),
+        ],
+      ),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: AppTextField(
+              hintText: 'Buscar produtos',
+
+              onChanged: context.read<ProductsByCategoryController>().search,
+            ),
+          ),
+          Expanded(
+            child: Consumer<ProductsByCategoryController>(
+              builder: (context, controller, child) {
+                if (controller.state == ProductsByCategoryViewState.error) {
+                  return const Center(
+                    child: Text('Problema ao resgatar produtos'),
+                  );
+                }
+
+                final isLoading =
+                    controller.state == ProductsByCategoryViewState.loading;
+                final products = isLoading
+                    ? _fakeProducts
+                    : controller.products;
+
+                if (!isLoading && products.isEmpty) {
+                  return const Center(child: Text('Nenhum produto encontrado'));
+                }
+
+                return Skeletonizer(
+                  enabled: isLoading,
+                  child: GridView.builder(
+                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                    itemCount: products.length,
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 0.62,
+                        ),
+                    itemBuilder: (context, index) {
+                      return ProductCard(product: products[index]);
+                    },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,10 +1,11 @@
-class Products {
+class Product {
   final String brand;
   final String name;
   final String imageUrl;
   final double price;
   final String category;
-  Products({
+
+  Product({
     required this.brand,
     required this.name,
     required this.imageUrl,
@@ -12,12 +13,12 @@ class Products {
     required this.category,
   });
 
-  factory Products.fromJson(Map<String, dynamic> json) {
-    return Products(
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
       brand: json['brand'],
       name: json['name'],
       imageUrl: json['imageUrl'],
-      price: json['price'],
+      price: (json['price'] as num).toDouble(),
       category: json['category'],
     );
   }

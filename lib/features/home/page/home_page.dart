@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/home/controllers/home_controller.dart';
-import 'package:flutter_application_1/features/home/models/category_model.dart';
-import 'package:flutter_application_1/features/home/models/products_model.dart';
 import 'package:flutter_application_1/features/home/page/widget/categories__state.dart';
 import 'package:flutter_application_1/features/home/page/widget/products_section.dart';
 import 'package:flutter_application_1/features/login/controllers/login_controller.dart';
-import 'package:flutter_application_1/shared/app_colors.dart';
 import 'package:flutter_application_1/shared/app_text_style.dart';
 
 import 'package:provider/provider.dart';
@@ -44,32 +41,48 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: Consumer<HomeController>(
-        builder: (context, homeCrontroller, child) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CategoriesSection(
-                state: homeCrontroller.categoriesState,
-                categories: homeCrontroller.categories,
-              ),
-              Text("Produtos", style: AppTextStyle.title),
-              ProductsSection(
-                state: homeCrontroller.productsState,
-                products: homeCrontroller.products,
-              ),
-              Spacer(),
+        builder: (context, homeCrontroller, child) => Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // CategoriesSection(
+            //   state: homeCrontroller.categoriesState,
+            //   categories: homeCrontroller.categories,
+            // ),
 
-              ElevatedButton(
-                onPressed: () {
-                  homeCrontroller
-                    ..getCategories()
-                    ..getproducts();
+            // ProductsSection(
+            //   isLoading:
+            //       homeCrontroller.productsState == productsViewState.loading,
+            //   hasError:
+            //       homeCrontroller.productsState == productsViewState.erros,
+            //   products: homeCrontroller.products,
+            // ),
+            // https://medium.com/@johnathanrocha/criando-um-carrossel-de-imagens-no-flutter-80156432c792
+            SizedBox(
+              height: 250,
+              child: PageView.builder(
+                itemCount: homeCrontroller.images.length,
+                scrollDirection: Axis.horizontal,
+                pageSnapping: true,
+                itemBuilder: (context, pagePosition) {
+                  return Container(
+                    margin: EdgeInsets.all(10),
+                    child: Image.asset(homeCrontroller.images[pagePosition]),
+                  );
                 },
-                child: Text('asdasd'),
               ),
-            ],
-          );
-        },
+            ),
+
+            // ElevatedButton(
+            //   onPressed: () {
+            //     homeCrontroller
+            //       ..getCategories()
+            //       ..getproducts();
+            //   },
+            //   child: Text('asdasd'),
+            // ),
+            // Spacer(),
+          ],
+        ),
       ),
     );
   }
