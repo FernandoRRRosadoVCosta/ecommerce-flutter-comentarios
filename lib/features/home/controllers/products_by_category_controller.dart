@@ -6,6 +6,8 @@ enum ProductsByCategoryViewState { loading, success, error }
 
 class ProductsByCategoryController extends ChangeNotifier {
   List<Product> _categoryProducts = [];
+  List<Product> allProducts = [];
+  List<String> brands = [];
 
   String _query = '';
 
@@ -19,6 +21,21 @@ class ProductsByCategoryController extends ChangeNotifier {
       return product.name.toLowerCase().contains(query) ||
           product.brand.toLowerCase().contains(query);
     }).toList();
+  }
+
+  void loadInitialData() {
+    try {
+      // Converte todo o JSON do mock para uma lista de Objetos do tipo Product
+      allProducts = productsJson.map((item) => Product.fromJson(item)).toList();
+
+      // Extrai apenas as marcas dos produtos, remove duplicados e transforma em lista
+      brands = allProducts.map((product) => product.brand).toSet().toList();
+
+      // Opcional: Deixa as marcas em ordem alfabética no dropdown
+      brands.sort();
+    } catch (e) {
+      print("Erro ao carregar mock: $e");
+    }
   }
 
   void changeState(ProductsByCategoryViewState newState) {

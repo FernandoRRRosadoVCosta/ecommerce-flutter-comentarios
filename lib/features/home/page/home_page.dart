@@ -44,19 +44,6 @@ class _HomePageState extends State<HomePage> {
         builder: (context, homeCrontroller, child) => Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // CategoriesSection(
-            //   state: homeCrontroller.categoriesState,
-            //   categories: homeCrontroller.categories,
-            // ),
-
-            // ProductsSection(
-            //   isLoading:
-            //       homeCrontroller.productsState == productsViewState.loading,
-            //   hasError:
-            //       homeCrontroller.productsState == productsViewState.erros,
-            //   products: homeCrontroller.products,
-            // ),
-            // https://medium.com/@johnathanrocha/criando-um-carrossel-de-imagens-no-flutter-80156432c792
             SizedBox(
               height: 250,
               child: PageView.builder(
@@ -71,6 +58,19 @@ class _HomePageState extends State<HomePage> {
                 },
               ),
             ),
+            CategoriesSection(
+              state: homeCrontroller.categoriesState,
+              categories: homeCrontroller.categories,
+            ),
+
+            ProductsSection(
+              isLoading:
+                  homeCrontroller.productsState == productsViewState.loading,
+              hasError:
+                  homeCrontroller.productsState == productsViewState.erros,
+              products: homeCrontroller.products,
+            ),
+            // https://medium.com/@johnathanrocha/criando-um-carrossel-de-imagens-no-flutter-80156432c792
 
             // ElevatedButton(
             //   onPressed: () {

@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/features/home/controllers/products_by_category_controller.dart';
 import 'package:flutter_application_1/features/home/models/products_model.dart';
@@ -29,6 +30,8 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
       category: '',
     ),
   );
+
+  String _selectedCountry = 'Brasil';
 
   @override
   void initState() {
@@ -63,6 +66,12 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
               onChanged: context.read<ProductsByCategoryController>().search,
             ),
           ),
+          DropdownSearch<String>(
+            items: (filter, loadProps) =>
+                context.read<ProductsByCategoryController>().brands,
+            selectedItem: "$_selectedCountry",
+          ),
+
           Expanded(
             child: Consumer<ProductsByCategoryController>(
               builder: (context, controller, child) {
