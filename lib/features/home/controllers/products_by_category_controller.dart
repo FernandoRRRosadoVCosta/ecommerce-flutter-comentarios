@@ -10,31 +10,43 @@ class ProductsByCategoryController extends ChangeNotifier {
   List<String> brands = [];
 
   String _query = '';
+  String _selectedBrand = '';
 
   ProductsByCategoryViewState state = ProductsByCategoryViewState.loading;
 
   List<Product> get products {
-    if (_query.isEmpty) return _categoryProducts;
+    if (_query.isEmpty && _selectedBrand == 'Todos') return _categoryProducts;
 
     final query = _query.toLowerCase();
     return _categoryProducts.where((product) {
+      if (_query.isNotEmpty && _selectedBrand != 'Todos') {
+        return product.name.toLowerCase().contains(query) &&
+            product.brand == _selectedBrand;
+      } else if (_query.isNotEmpty) {
+        return product.name.toLowerCase().contains(query);
+      } else if (_selectedBrand != 'Todos') {
+        return product.brand == _selectedBrand;
+      }
       return product.name.toLowerCase().contains(query) ||
           product.brand.toLowerCase().contains(query);
     }).toList();
   }
 
-  void loadInitialData() {
+  Future<void> getProductsByBrand() async {
+    changeState(ProductsByCategoryViewState.loading);
     try {
-      // Converte todo o JSON do mock para uma lista de Objetos do tipo Product
-      allProducts = productsJson.map((item) => Product.fromJson(item)).toList();
+      brands = _categoryProducts
+          .map((item) {
+            return item.brand;
+          })
+          .toList()
+          .toSet()
+          .toList();
+      print(brands);
 
-      // Extrai apenas as marcas dos produtos, remove duplicados e transforma em lista
-      brands = allProducts.map((product) => product.brand).toSet().toList();
-
-      // Opcional: Deixa as marcas em ordem alfabética no dropdown
-      brands.sort();
+      changeState(ProductsByCategoryViewState.success);
     } catch (e) {
-      print("Erro ao carregar mock: $e");
+      changeState(ProductsByCategoryViewState.error);
     }
   }
 
@@ -48,7 +60,14 @@ class ProductsByCategoryController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void selectBrand(String brand) {
+    _selectedBrand = brand;
+    notifyListeners();
+  }
+
   Future<void> getProductsByCategory(String category) async {
+    _selectedBrand = 'Todos';
+    _query = '';
     changeState(ProductsByCategoryViewState.loading);
 
     await Future.delayed(Duration(seconds: 3));
@@ -57,7 +76,7 @@ class ProductsByCategoryController extends ChangeNotifier {
           .map((item) => Product.fromJson(item))
           .where((product) => product.category == category)
           .toList();
-
+      getProductsByBrand();
       changeState(ProductsByCategoryViewState.success);
     } catch (e) {
       changeState(ProductsByCategoryViewState.error);

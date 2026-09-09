@@ -21,7 +21,7 @@ class LoginController extends ChangeNotifier {
         senhaController.text.trim() != '122333') {
       throw AuthException('E-mail ou senha incorretos');
     }
-    user = User(nome: 'Vitor', email: emailController.text);
+    user = User(nome: 'gabriel', email: emailController.text);
   }
 
   String? validateEmail(String? value) {

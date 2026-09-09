@@ -31,15 +31,14 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
     ),
   );
 
-  String _selectedCountry = 'Brasil';
+  String _selectedCountry = 'categoria';
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<ProductsByCategoryController>().getProductsByCategory(
-        widget.categoryName,
-      );
+      context.read<ProductsByCategoryController>()
+        ..getProductsByCategory(widget.categoryName);
     });
   }
 
@@ -66,10 +65,27 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
               onChanged: context.read<ProductsByCategoryController>().search,
             ),
           ),
-          DropdownSearch<String>(
-            items: (filter, loadProps) =>
-                context.read<ProductsByCategoryController>().brands,
-            selectedItem: "$_selectedCountry",
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: DropdownButtonFormField<String>(
+              decoration: const InputDecoration(
+                labelText: 'Filtrar por marca',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (value) {
+                context.read<ProductsByCategoryController>().selectBrand(
+                  value!,
+                );
+              },
+              items: [
+                DropdownMenuItem(value: 'Todos', child: Text('Todos')),
+                ...context.read<ProductsByCategoryController>().brands.map((
+                  brand,
+                ) {
+                  return DropdownMenuItem(value: brand, child: Text(brand));
+                }),
+              ],
+            ),
           ),
 
           Expanded(

@@ -45,8 +45,12 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 250,
+              height: 157,
               child: PageView.builder(
+                onPageChanged: (value) {
+                  homeCrontroller.changePageViewIndex(value);
+                },
+
                 itemCount: homeCrontroller.images.length,
                 scrollDirection: Axis.horizontal,
                 pageSnapping: true,
@@ -56,6 +60,16 @@ class _HomePageState extends State<HomePage> {
                     child: Image.asset(homeCrontroller.images[pagePosition]),
                   );
                 },
+              ),
+            ),
+            SizedBox(
+              height: 20,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: homeCrontroller.indicators(
+                  homeCrontroller.images.length,
+                  homeCrontroller.pageViewIndex,
+                ),
               ),
             ),
             CategoriesSection(

@@ -20,7 +20,7 @@ class CategoryCard extends StatelessWidget {
       },
       child: Container(
         margin: EdgeInsets.all(10),
-        height: 141,
+        height: 147,
         child: Column(
           children: [
             Skeleton.replace(

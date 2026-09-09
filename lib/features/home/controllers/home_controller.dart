@@ -10,6 +10,7 @@ enum productsViewState { loading, success, erros }
 class HomeController extends ChangeNotifier {
   List<Category> categories = [];
   List<Product> products = [];
+  int pageViewIndex = 0;
   CategoriesViewState categoriesState = CategoriesViewState.loading;
   productsViewState productsState = productsViewState.loading;
   List<String> images = [
@@ -19,15 +20,20 @@ class HomeController extends ChangeNotifier {
   List<Widget> indicators(imagesLength, currentIndex) {
     return List<Widget>.generate(imagesLength, (index) {
       return Container(
-        margin: EdgeInsets.all(3),
+        margin: EdgeInsets.all(2),
         width: 10,
-        height: 10,
+        height: 9,
         decoration: BoxDecoration(
           color: currentIndex == index ? Colors.black : Colors.black26,
           shape: BoxShape.circle,
         ),
       );
     });
+  }
+
+  void changePageViewIndex(int index) {
+    pageViewIndex = index;
+    notifyListeners();
   }
 
   void changeCategoriesState(CategoriesViewState state) {

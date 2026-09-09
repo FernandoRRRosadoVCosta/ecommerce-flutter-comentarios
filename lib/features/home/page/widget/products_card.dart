@@ -11,27 +11,54 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(8),
-          child: Skeleton.replace(
-            child: AspectRatio(
-              aspectRatio: 1,
-              child: Image.network(product.imageUrl, fit: BoxFit.cover),
+    return GestureDetector(
+      onTap: () {
+        print('clicou no produto ${product.name}');
+        showModalBottomSheet(
+          context: context,
+          builder: (context) {
+            return Container(
+              padding: EdgeInsets.all(16),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(product.name, style: AppTextStyle.title),
+                  SizedBox(height: 100, width: 700),
+                  Text(product.brand, style: AppTextStyle.smallGrey),
+                  SizedBox(height: 100, width: 700),
+                  Text(
+                    '\$${product.price.toStringAsFixed(2).replaceAll('.', ',')}',
+                    style: AppTextStyle.smallGreen,
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: Skeleton.replace(
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: Image.network(product.imageUrl, fit: BoxFit.cover),
+              ),
             ),
           ),
-        ),
-        SizedBox(height: 8),
-        Text(product.brand, style: AppTextStyle.smallGrey),
-        Text(product.name, style: AppTextStyle.smallBlack),
-        Text(
-          '\$${product.price.toStringAsFixed(2).replaceAll('.', ',')}',
-          style: AppTextStyle.smallGreen,
-        ),
-      ],
+          SizedBox(height: 8),
+          Text(product.brand, style: AppTextStyle.smallGrey),
+          Text(product.name, style: AppTextStyle.smallBlack),
+          Text(
+            '\$${product.price.toStringAsFixed(2).replaceAll('.', ',')}',
+            style: AppTextStyle.smallGreen,
+          ),
+        ],
+      ),
     );
   }
 }
