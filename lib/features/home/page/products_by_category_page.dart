@@ -28,6 +28,7 @@ class _ProductsByCategoryPageState extends State<ProductsByCategoryPage> {
       imageUrl: '',
       price: 0,
       category: '',
+      description: '',
     ),
   );
 

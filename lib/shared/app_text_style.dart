@@ -4,7 +4,7 @@ import 'package:flutter_application_1/shared/app_colors.dart';
 class AppTextStyle {
   static TextStyle title = TextStyle(
     color: AppColors.black,
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: FontWeight.bold,
   );
   static TextStyle corpoTitle = TextStyle(

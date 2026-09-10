@@ -84,7 +84,14 @@ class LoginPage extends StatelessWidget {
                                 controller.changeActiveCheckBox();
                               },
                             ),
-                            Text('Lembrar-me', style: AppTextStyle.corpoTitle),
+                            Text(
+                              'Lembrar-me',
+                              style: TextStyle(
+                                color: AppColors.black,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                           ],
                         ),
 

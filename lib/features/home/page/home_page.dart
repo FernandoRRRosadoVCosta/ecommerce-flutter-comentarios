@@ -84,17 +84,17 @@ class _HomePageState extends State<HomePage> {
                   homeCrontroller.productsState == productsViewState.erros,
               products: homeCrontroller.products,
             ),
-            // https://medium.com/@johnathanrocha/criando-um-carrossel-de-imagens-no-flutter-80156432c792
 
-            // ElevatedButton(
-            //   onPressed: () {
-            //     homeCrontroller
-            //       ..getCategories()
-            //       ..getproducts();
-            //   },
-            //   child: Text('asdasd'),
-            // ),
-            // Spacer(),
+            // https://medium.com/@johnathanrocha/criando-um-carrossel-de-imagens-no-flutter-80156432c792
+            ElevatedButton(
+              onPressed: () {
+                homeCrontroller
+                  ..getCategories()
+                  ..getproducts();
+              },
+              child: Text('asdasd'),
+            ),
+            Spacer(),
           ],
         ),
       ),

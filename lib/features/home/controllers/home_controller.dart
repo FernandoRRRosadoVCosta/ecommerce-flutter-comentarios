@@ -10,6 +10,7 @@ enum productsViewState { loading, success, erros }
 class HomeController extends ChangeNotifier {
   List<Category> categories = [];
   List<Product> products = [];
+  List<String> carrinho = [];
   int pageViewIndex = 0;
   CategoriesViewState categoriesState = CategoriesViewState.loading;
   productsViewState productsState = productsViewState.loading;
